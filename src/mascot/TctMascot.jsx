@@ -4,7 +4,7 @@ import {
   boot, closeChat, closeChatInstant, finishPanelClose, getUi, openChatInstant, projectToScreen,
   setThinking, subscribe, wake, setProjectionPixel, state as mstate,
 } from "./store.js";
-import { probeWebGL } from "./support.js";
+import { handleRobotTap, probeWebGL } from "./support.js";
 import Robot2D from "./Robot2D.jsx";
 import {
   JOB_STEPS, QUICK_CHIPS, buildJobPayload, buildLeadPayload, jobPrompt, leadPrompt,
@@ -438,7 +438,7 @@ export default function TctMascot() {
           type="button"
           className="tct3d-hit"
           style={{ left: hitPos.x, top: hitPos.y }}
-          onClick={wake}
+          onClick={(e) => handleRobotTap(e, wake)}
           aria-label="Wake up the TCT Assistant"
           title="Psst… wake the robot"
         >

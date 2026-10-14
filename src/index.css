@@ -3095,7 +3095,7 @@ h1, h2, h3, h4, h5 {
   }
 }
 
-.auth-side h2 {
+.auth-side h1 {
   color: #fff;
   font-size: clamp(1.7rem, 3vw, 2.4rem);
 }
@@ -5022,7 +5022,7 @@ a.journey-card:focus-visible::after {
   padding: 34px 30px;
 }
 
-.career-intro h1 {
+.career-intro h2 {
   color: var(--primary);
   font-size: clamp(1.6rem, 3.2vw, 2.3rem);
   margin-bottom: 14px;
@@ -5030,7 +5030,7 @@ a.journey-card:focus-visible::after {
   position: relative;
 }
 
-.career-intro h1::after {
+.career-intro h2::after {
   content: "";
   position: absolute;
   left: 0;

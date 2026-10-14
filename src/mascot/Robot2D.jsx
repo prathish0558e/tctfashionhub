@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { handleRobotTap } from "./support.js";
 
 /*
  * Fallback assistant — a hand-built SVG robot resting on a cloud.
@@ -25,7 +26,7 @@ export default function Robot2D({ hitPos, onTap, awake = false, busy = false, op
       type="button"
       className={`tct2d ${awake ? "is-awake" : "is-asleep"}${busy ? " is-busy" : ""}${open ? " is-open" : ""}`}
       style={{ left: `${hitPos.x}px`, top: `${hitPos.y}px` }}
-      onClick={() => { setHint(false); onTap?.(); }}
+      onClick={(e) => handleRobotTap(e, () => { setHint(false); onTap?.(); })}
       aria-label={awake ? "TCT Assistant is here — open the chat" : "Wake up the TCT Assistant"}
       title={awake ? "Ask the TCT Assistant" : "Psst… wake the robot"}
     >

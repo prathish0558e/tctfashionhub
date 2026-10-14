@@ -497,7 +497,9 @@ export default function Admin() {
             <div className="icon" style={{ margin: "0 auto 14px" }}>
               <i className="bi bi-shield-lock"></i>
             </div>
-            <h2 style={{ marginBottom: 8 }}>Admin area</h2>
+            {/* The only public view of /admin — it must own the page <h1>.
+                Inline fontSize keeps the old <h2> look exactly. */}
+            <h1 style={{ marginBottom: 8, fontSize: "1.5rem" }}>Admin area</h1>
             <p style={{ color: "var(--muted)", marginBottom: 22 }}>
               Please sign in with the admin account to view job applications
               and enquiries.

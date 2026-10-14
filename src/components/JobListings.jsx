@@ -136,7 +136,9 @@ export default function JobListings({ trackTitle, intro, jobs, showGithubField =
         <div className="container">
           <Reveal>
             <div className="career-intro">
-              <h1>{trackTitle} Career Opportunities</h1>
+              {/* PageHero already owns the page's single <h1>; this is a
+                  section heading and must stay <h2> for SEO/a11y. */}
+              <h2>{trackTitle} Career Opportunities</h2>
               {intro.map((p) => (
                 <p key={p.slice(0, 32)}>{p}</p>
               ))}

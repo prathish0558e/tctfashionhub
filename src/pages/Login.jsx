@@ -30,7 +30,7 @@ export default function Login() {
       <div className="auth-side">
         <img src="/tct-logo.png" alt="Trend Code Technology logo" className="brand-img" />
         <span className="eyebrow on-dark">Client Portal</span>
-        <h2>Welcome back to Trend Code Technology</h2>
+        <h1>Welcome back to Trend Code Technology</h1>
         <p>
           Track project status, review deliverables and chat with your
           delivery team — all from one dashboard.

@@ -83,3 +83,61 @@ export function probeWebGL() {
     return { ok: false, reason: `threw:${error?.name || "error"}` };
   }
 }
+
+/* ------------------------------------------------------------------ */
+/* Tap arbitration                                                     */
+/*                                                                     */
+/* The robot is a fixed overlay above scrollable content (hero CTAs,   */
+/* site cards…), so its hit box inevitably covers page controls on     */
+/* small screens. Two rules keep both sides usable:                    */
+/*   • the robot's CORE (head/torso band) always belongs to the robot  */
+/*     — it is visually covered anyway, exactly like a chat head;      */
+/*   • the DECORATION ring (cloud puffs, halo, glow) passes taps       */
+/*     through to whatever real link/button/field sits underneath,     */
+/*     so the mascot never steals a tap from content the visitor can   */
+/*     actually see.                                                   */
+/* ------------------------------------------------------------------ */
+
+/* Forward one tap to the page control under (x, y), if any. Returns
+   true when something real was clicked instead of the robot. */
+function forwardTapToPageControl(el, x, y) {
+  if (!el || typeof document === "undefined") return false;
+  const prev = el.style.pointerEvents;
+  el.style.pointerEvents = "none";
+  let under = null;
+  try {
+    under = document.elementFromPoint(x, y);
+  } finally {
+    el.style.pointerEvents = prev;
+  }
+  if (!under || under === el) return false;
+  const control = under.closest(
+    "a[href], button, input, textarea, select, label, [role=button]"
+  );
+  // Never forward into the mascot's own UI (chat panel, robot, chip).
+  if (!control || control.closest(".tct3d-wrap, .tct2d, .tct3d-panel")) return false;
+  control.click();
+  return true;
+}
+
+/* Single entry point for both robots (3D hit button + SVG fallback).
+   `onRobot` is the wake/open action. Keyboard activation (detail 0,
+   which has no pointer coordinates) always belongs to the robot. */
+export function handleRobotTap(event, onRobot) {
+  const el = event.currentTarget;
+  // Keyboard activation reports no pointer coordinates (0, 0). Touch taps do
+  // carry real coordinates even when some browsers report detail as 0, so
+  // only the coordinate test is trusted for the "always the robot" path.
+  const keyboard = event.clientX === 0 && event.clientY === 0;
+  if (keyboard || !el) {
+    onRobot();
+    return;
+  }
+  const r = el.getBoundingClientRect();
+  const nx = r.width ? (event.clientX - r.left) / r.width : 0.5;
+  const ny = r.height ? (event.clientY - r.top) / r.height : 0.5;
+  // Core band ≈ the character's head + torso (upper-middle of the box).
+  const onCore = nx > 0.25 && nx < 0.75 && ny > 0.15 && ny < 0.75;
+  if (!onCore && forwardTapToPageControl(el, event.clientX, event.clientY)) return;
+  onRobot();
+}
